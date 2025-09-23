@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    long price;
+    int year;
+} House;
+
+int cmp(const void *a, const void *b) {
+    House *ha = (House *)a;
+    House *hb = (House *)b;
+    if (ha->price < hb->price) return -1;
+    else if (ha->price > hb->price) return 1;
+    else return 0;
+}
+
+int minimumLoss(long prices[], int n) {
+    House houses[n];
+    for (int i = 0; i < n; i++) {
+        houses[i].price = prices[i];
+        houses[i].year = i;
+    }
+
+    qsort(houses, n, sizeof(House), cmp);
+
+    long minLoss = 1000000000000000L; // large number
+    for (int i = 1; i < n; i++) {
+        // Check if buying year < selling year
+        if (houses[i].year < houses[i-1].year) {
+            long loss = houses[i].price - houses[i-1].price;
+            if (loss < minLoss && loss > 0) {
+                minLoss = loss;
+            }
+        }
+    }
+
+    return (int)minLoss;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    long prices[n];
+    for (int i = 0; i < n; i++) {
+        scanf("%ld", &prices[i]);
+    }
+    printf("%d\n", minimumLoss(prices, n));
+    return 0;
+}
