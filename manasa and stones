@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Comparison function for qsort
+int cmpfunc(const void * a, const void * b) {
+    return (*(int*)a - *(int*)b);
+}
+
+void stones(int n, int a, int b) {
+    int count = n;
+    int results[n];
+    int index = 0;
+
+    if (a > b) {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+
+    for (int i = 0; i < n; i++) {
+        int val = i * b + (n - 1 - i) * a;
+        results[index++] = val;
+    }
+
+    // Remove duplicates if a == b (optional here since a < b ensures uniqueness)
+    qsort(results, n, sizeof(int), cmpfunc);
+
+    int last = -1;
+    for (int i = 0; i < n; i++) {
+        if (results[i] != last) {
+            printf("%d ", results[i]);
+            last = results[i];
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    int T;
+    scanf("%d", &T);
+
+    for (int t = 0; t < T; t++) {
+        int n, a, b;
+        scanf("%d", &n);
+        scanf("%d", &a);
+        scanf("%d", &b);
+        stones(n, a, b);
+    }
+
+    return 0;
+}
