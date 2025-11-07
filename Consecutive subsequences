@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+    int T;
+    scanf("%d", &T);
+    while (T--) {
+        int n, k;
+        scanf("%d %d", &n, &k);
+        long long freq[101];
+        memset(freq, 0, sizeof(freq));
+        freq[0] = 1;
+        long long result = 0, prefix = 0;
+        for (int i = 0; i < n; ++i) {
+            int a;
+            scanf("%d", &a);
+            prefix = (prefix + a) % k;
+            result += freq[prefix];
+            freq[prefix]++;
+        }
+        printf("%lld\n", result);
+    }
+    return 0;
+}
